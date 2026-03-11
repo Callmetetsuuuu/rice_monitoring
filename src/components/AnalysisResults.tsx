@@ -37,9 +37,14 @@ export function AnalysisResults({ showLatestOnly = false, isCameraActive = false
   const getRecentAnalyses = () => analyses.filter((a) => isWithinCaptureTime(a.analyzed_at));
 
   const getFilteredAnalysesForGeneral = (mode: 'all' | '20' | 'current') => {
-    if (mode === 'current') return analyses.slice(0, 1);
-    if (mode === '20') return analyses.slice(0, 20);
-    return analyses;
+    // Prefer only the current session's captures (within CAPTURE_TIME_LIMIT_MINS).
+    // If there are no recent captures, fall back to all analyses.
+    const sessionAnalyses = getRecentAnalyses();
+    const base = sessionAnalyses.length > 0 ? sessionAnalyses : analyses;
+
+    if (mode === 'current') return base.slice(0, 1);
+    if (mode === '20') return base.slice(0, 20);
+    return base;
   };
 
   const calculateGeneralAnalysis = (mode: 'all' | '20' | 'current') => {
