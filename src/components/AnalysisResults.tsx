@@ -5,7 +5,15 @@ import { fetchAnalyses, AnalysisWithImage } from '../lib/api';
 const DISPLAY_LIMIT = 5;
 const CAPTURE_TIME_LIMIT_MINS = 20;
 
-export function AnalysisResults({ showLatestOnly = false, isCameraActive = false }: { showLatestOnly?: boolean; isCameraActive?: boolean }) {
+export function AnalysisResults({
+  showLatestOnly = false,
+  isCameraActive = false,
+  sessionStartTime,
+}: {
+  showLatestOnly?: boolean;
+  isCameraActive?: boolean;
+  sessionStartTime?: string | null;
+}) {
   const [analyses, setAnalyses] = useState<AnalysisWithImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -37,13 +45,24 @@ export function AnalysisResults({ showLatestOnly = false, isCameraActive = false
   const getRecentAnalyses = () => analyses.filter((a) => isWithinCaptureTime(a.analyzed_at));
 
   const getFilteredAnalysesForGeneral = (mode: 'all' | '20' | 'current') => {
-    // Prefer only the current session's captures (within CAPTURE_TIME_LIMIT_MINS).
-    // If there are no recent captures, fall back to all analyses.
-    const sessionAnalyses = getRecentAnalyses();
-    const base = sessionAnalyses.length > 0 ? sessionAnalyses : analyses;
+    // Strict per-session behavior:
+    // - If sessionStartTime is provided, only include analyses from that moment onwards.
+    // - Otherwise, fall back to "recent window" behavior (last CAPTURE_TIME_LIMIT_MINS).
+    let base = analyses;
+
+    if (sessionStartTime) {
+      const startTs = new Date(sessionStartTime).getTime();
+      base = analyses.filter((a) => new Date(a.analyzed_at).getTime() >= startTs);
+    } else {
+      const sessionAnalyses = getRecentAnalyses();
+      base = sessionAnalyses.length > 0 ? sessionAnalyses : analyses;
+    }
 
     if (mode === 'current') return base.slice(0, 1);
-    if (mode === '20') return base.slice(0, 20);
+    if (mode === '20') {
+      // Last 20 minutes of captured images (within current session base)
+      return base.filter((a) => isWithinCaptureTime(a.analyzed_at));
+    }
     return base;
   };
 
