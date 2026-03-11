@@ -19,7 +19,7 @@ export function AnalysisResults({
   const [showAll, setShowAll] = useState(false);
   const [modalAnalysis, setModalAnalysis] = useState<AnalysisWithImage | null>(null);
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
-  const [generalViewMode, setGeneralViewMode] = useState<'all' | '20' | 'current'>('all');
+  const [generalViewMode, setGeneralViewMode] = useState<'all' | 'session' | '20' | 'current'>('session');
 
   useEffect(() => {
     loadAnalyses();
@@ -44,29 +44,35 @@ export function AnalysisResults({
 
   const getRecentAnalyses = () => analyses.filter((a) => isWithinCaptureTime(a.analyzed_at));
 
-  const getFilteredAnalysesForGeneral = (mode: 'all' | '20' | 'current') => {
-    // Strict per-session behavior:
-    // - If sessionStartTime is provided, only include analyses from that moment onwards.
-    // - Otherwise, fall back to "recent window" behavior (last CAPTURE_TIME_LIMIT_MINS).
-    let base = analyses;
-
-    if (sessionStartTime) {
-      const startTs = new Date(sessionStartTime).getTime();
-      base = analyses.filter((a) => new Date(a.analyzed_at).getTime() >= startTs);
-    } else {
-      const sessionAnalyses = getRecentAnalyses();
-      base = sessionAnalyses.length > 0 ? sessionAnalyses : analyses;
-    }
-
-    if (mode === 'current') return base.slice(0, 1);
-    if (mode === '20') {
-      // Last 20 minutes of captured images (within current session base)
-      return base.filter((a) => isWithinCaptureTime(a.analyzed_at));
-    }
-    return base;
+  const getSessionAnalyses = () => {
+    if (!sessionStartTime) return [];
+    const startTs = new Date(sessionStartTime).getTime();
+    return analyses.filter((a) => new Date(a.analyzed_at).getTime() >= startTs);
   };
 
-  const calculateGeneralAnalysis = (mode: 'all' | '20' | 'current') => {
+  const getFilteredAnalysesForGeneral = (mode: 'all' | 'session' | '20' | 'current') => {
+    if (!analyses || analyses.length === 0) return [];
+
+    if (mode === 'session') {
+      const sessionItems = getSessionAnalyses();
+      return sessionItems.length > 0 ? sessionItems : analyses;
+    }
+
+    if (mode === '20') {
+      const recent = getRecentAnalyses();
+      return recent.length > 0 ? recent : analyses;
+    }
+
+    if (mode === 'current') {
+      // Always treat "current image" as the latest analysis entry
+      return analyses.slice(0, 1);
+    }
+
+    // "all" mode: all captured images
+    return analyses;
+  };
+
+  const calculateGeneralAnalysis = (mode: 'all' | 'session' | '20' | 'current') => {
     const items = getFilteredAnalysesForGeneral(mode);
     if (!items || items.length === 0) return null;
     let sumHealth = 0;
@@ -333,13 +339,44 @@ export function AnalysisResults({
           <Clock className="h-5 w-5 text-emerald-600" />
           <span className="text-sm font-medium text-emerald-800">General Analysis - Last updated now</span>
           <div className="flex gap-2 flex-wrap ml-auto">
-            <button onClick={() => setGeneralViewMode('all')} className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${generalViewMode === 'all' ? 'bg-emerald-600 text-white' : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'}`}>
+            <button
+              onClick={() => setGeneralViewMode('all')}
+              className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${
+                generalViewMode === 'all'
+                  ? 'bg-emerald-600 text-white'
+                  : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'
+              }`}
+            >
               All Captures
             </button>
-            <button onClick={() => setGeneralViewMode('20')} className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${generalViewMode === '20' ? 'bg-emerald-600 text-white' : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'}`}>
-              Last 20
+            <button
+              onClick={() => setGeneralViewMode('session')}
+              className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${
+                generalViewMode === 'session'
+                  ? 'bg-emerald-600 text-white'
+                  : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'
+              }`}
+            >
+              Current Session
             </button>
-            <button onClick={() => setGeneralViewMode('current')} className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${generalViewMode === 'current' ? 'bg-emerald-600 text-white' : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'}`}>
+            <button
+              onClick={() => setGeneralViewMode('20')}
+              className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${
+                generalViewMode === '20'
+                  ? 'bg-emerald-600 text-white'
+                  : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'
+              }`}
+            >
+              Last 20 mins
+            </button>
+            <button
+              onClick={() => setGeneralViewMode('current')}
+              className={`flex-1 min-w-max px-3 py-2 rounded-lg text-sm font-medium transition ${
+                generalViewMode === 'current'
+                  ? 'bg-emerald-600 text-white'
+                  : 'border border-emerald-200 text-emerald-700 hover:bg-emerald-50'
+              }`}
+            >
               Current Image
             </button>
           </div>
