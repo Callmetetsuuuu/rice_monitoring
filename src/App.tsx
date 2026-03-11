@@ -16,14 +16,14 @@ function App() {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-100 via-yellow-50/30 to-emerald-100">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-yellow-50/30 to-emerald-50">
       <InfoModal isOpen={isInfoOpen} setIsOpen={setIsInfoOpen} />
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Header onOpenInfo={() => setIsInfoOpen(true)} />
 
         <div className="mb-10 grid gap-8 lg:grid-cols-2 items-stretch">
           <section>
-            <div className="mb-6 rounded-2xl border border-emerald-300 bg-white/85 p-6 shadow-sm h-full">
+            <div className="mb-6 rounded-2xl border border-emerald-200 bg-white/80 p-6 shadow-sm h-full">
               <div className="mb-4 flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-emerald-500" />
                 <h2 className="text-xl font-semibold text-emerald-800">Live Camera</h2>
@@ -37,7 +37,7 @@ function App() {
           </section>
 
           <section>
-            <div className="rounded-2xl border border-emerald-300 bg-white/85 p-6 shadow-sm h-full">
+            <div className="rounded-2xl border border-emerald-200 bg-white/80 p-6 shadow-sm h-full">
               <div className="mb-4 flex items-center gap-2">
                 <h2 className="text-xl font-semibold text-emerald-800">General Analysis</h2>
               </div>
@@ -50,12 +50,12 @@ function App() {
 
         {/* Analysis History full width below */}
         <div className="mt-8">
-          <div className="rounded-2xl border border-emerald-300 bg-white/85 p-6 shadow-sm">
+          <div className="rounded-2xl border border-emerald-200 bg-white/80 p-6 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-emerald-800">Analysis History</h2>
               <button
                 onClick={() => setRefreshKey((prev) => prev + 1)}
-                className="rounded-lg p-2 text-emerald-700 transition hover:bg-emerald-200 hover:text-emerald-900"
+                className="rounded-lg p-2 text-emerald-600 transition hover:bg-emerald-100 hover:text-emerald-800"
                 title="Refresh"
               >
                 <RefreshCw className="h-5 w-5" />

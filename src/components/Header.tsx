@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Props = {
   onOpenInfo?: () => void;
 };
@@ -7,29 +5,29 @@ type Props = {
 export function Header({ onOpenInfo }: Props): JSX.Element {
   return (
     <header className="mb-10">
-      <div className="flex items-center justify-between gap-4 rounded-2xl border border-emerald-300 bg-white/85 px-6 py-3 shadow-sm">
+      <div className="flex items-center justify-between gap-4 rounded-2xl border border-emerald-200 bg-white/80 px-6 py-3 shadow-sm">
         <div className="flex items-center gap-3">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-9 w-9 text-emerald-700">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-9 w-9 text-emerald-600">
             <path d="M12 2s4 1 6 4c2 3 1 7-2 10-3 3-7 5-10 3-3-2-4-6-2-9C7 5 12 2 12 2z" fill="#059669" />
             <path d="M12 7c1.5 0 3 1 3 3s-1.5 3-3 3-3-1-3-3 1.5-3 3-3z" fill="#ecfccb" />
           </svg>
           <div>
             <h1 className="text-lg font-bold text-emerald-800">Rice Plant Health Monitor</h1>
-            <p className="text-xs text-emerald-700">Field monitoring & RGB analysis</p>
+            <p className="text-xs text-emerald-600">Field monitoring & RGB analysis</p>
           </div>
         </div>
 
         <nav className="hidden sm:flex sm:items-center sm:gap-6">
-          <a href="#" className="text-sm font-medium text-emerald-800 hover:text-emerald-950">Home</a>
-          <a href="#analysis" className="text-sm font-medium text-emerald-800 hover:text-emerald-950">Analysis</a>
-          <a href="#docs" className="text-sm font-medium text-emerald-800 hover:text-emerald-950">Docs</a>
-          <a href="#about" className="text-sm font-medium text-emerald-800 hover:text-emerald-950">About</a>
+          <a href="#" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">Home</a>
+          <a href="#analysis" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">Analysis</a>
+          <a href="#docs" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">Docs</a>
+          <a href="#about" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">About</a>
         </nav>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => onOpenInfo?.()}
-            className="hidden rounded-md px-3 py-1 text-sm text-emerald-800 hover:bg-emerald-200 sm:inline-flex"
+            className="hidden rounded-md px-3 py-1 text-sm text-emerald-700 hover:bg-emerald-100 sm:inline-flex"
           >
             How it works
           </button>
@@ -38,7 +36,7 @@ export function Header({ onOpenInfo }: Props): JSX.Element {
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="rounded-md p-2 text-emerald-700 hover:bg-emerald-200"
+            className="rounded-md p-2 text-emerald-600 hover:bg-emerald-100"
             aria-label="GitHub"
           >
             <svg height="20" viewBox="0 0 16 16" width="20" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
@@ -47,7 +45,7 @@ export function Header({ onOpenInfo }: Props): JSX.Element {
           </a>
 
           <div className="hidden sm:block">
-            <svg viewBox="0 0 24 24" className="h-7 w-7 text-emerald-600" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" className="h-7 w-7 text-emerald-500" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="10" fill="#d1fae5" />
               <path d="M7 13c1.5-2 4-3 5-3s3.5 1 5 3" stroke="#065f46" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
