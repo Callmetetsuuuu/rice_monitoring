@@ -130,7 +130,7 @@ export function CameraCapture({ onCapture, onCameraStart, onCaptureStop }: Camer
   };
 
   return (
-    <div className="relative h-[90.5%] overflow-hidden rounded-2xl border border-emerald-200 bg-[transparent]  p-0">
+    <div className="relative h-[90.5%] overflow-hidden rounded-2xl border border-emerald-200 bg-[transparent]  p-8 bg-black">
       {/* Video/canvas always mounted so refs exist when starting camera */}
       <div
         className={
