@@ -130,7 +130,7 @@ export function CameraCapture({ onCapture, onCameraStart, onCaptureStop }: Camer
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-emerald-200 bg-white shadow-lg">
+    <div className="relative h-[90.5%] overflow-hidden rounded-2xl border border-emerald-200 bg-[transparent]  p-0">
       {/* Video/canvas always mounted so refs exist when starting camera */}
       <div
         className={
@@ -170,7 +170,7 @@ export function CameraCapture({ onCapture, onCameraStart, onCaptureStop }: Camer
       </div>
 
       {error ? (
-        <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl bg-amber-50 p-8">
+        <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-amber-50 p-8">
           <Camera className="mb-4 h-14 w-14 text-amber-500" />
           <p className="mb-6 text-center text-amber-800">{error}</p>
           <button
@@ -183,7 +183,7 @@ export function CameraCapture({ onCapture, onCameraStart, onCaptureStop }: Camer
           </button>
         </div>
       ) : !isStreaming ? (
-        <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl bg-emerald-50/80 p-8">
+        <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-emerald-50/80 p-8">
           <div className="mb-4 rounded-full bg-emerald-100 p-4">
             <Camera className="h-12 w-12 text-emerald-600" />
           </div>

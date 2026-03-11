@@ -104,8 +104,8 @@ export function AnalysisResults({ showLatestOnly = false, isCameraActive = false
       generalAnalysis.avgHealthScore >= 75
         ? 'Excellent'
         : generalAnalysis.avgHealthScore >= 50
-        ? 'Good'
-        : 'Needs Attention';
+          ? 'Good'
+          : 'Needs Attention';
 
     return (
       <div className="overflow-hidden rounded-xl border border-emerald-200 bg-white transition hover:border-emerald-400 hover:shadow-md">
@@ -127,7 +127,7 @@ export function AnalysisResults({ showLatestOnly = false, isCameraActive = false
           <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             <div className="rounded-lg bg-emerald-50 p-3">
               <div className="mb-1 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-emerald-600" />
+
                 <span className="text-xs font-medium text-emerald-600">Avg Health Score</span>
               </div>
               <p className="text-2xl font-bold text-emerald-800">{generalAnalysis.avgHealthScore.toFixed(0)}</p>
