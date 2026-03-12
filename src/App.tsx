@@ -8,9 +8,19 @@ import InfoModal from './components/InfoModal';
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState<string | null>(null);
 
   const handleCapture = () => {
     setRefreshKey((prev) => prev + 1);
+  };
+
+  const handleCameraStart = () => {
+    setIsCameraActive(true);
+    setSessionStartTime(new Date().toISOString());
+  };
+
+  const handleCameraStop = () => {
+    setIsCameraActive(false);
   };
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -29,7 +39,11 @@ function App() {
                 <h2 className="text-xl font-semibold text-emerald-800">Live Camera</h2>
               </div>
               <div className="h-full">
-                <CameraCapture onCapture={handleCapture} onCameraStart={() => setIsCameraActive(true)} onCaptureStop={() => setIsCameraActive(false)} />
+                <CameraCapture
+                  onCapture={handleCapture}
+                  onCameraStart={handleCameraStart}
+                  onCaptureStop={handleCameraStop}
+                />
               </div>
             </div>
 
@@ -42,7 +56,12 @@ function App() {
                 <h2 className="text-xl font-semibold text-emerald-800">General Analysis</h2>
               </div>
               <div className="h-full">
-                <AnalysisResults key={`general-${refreshKey}`} showLatestOnly={true} isCameraActive={isCameraActive} />
+                <AnalysisResults
+                  key={`general-${refreshKey}`}
+                  showLatestOnly={true}
+                  isCameraActive={isCameraActive}
+                  sessionStartTime={sessionStartTime}
+                />
               </div>
             </div>
           </section>
