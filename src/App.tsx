@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { CameraCapture } from './components/CameraCapture';
 import { AnalysisResults } from './components/AnalysisResults';
+import { DocsSection } from './components/DocsSection';
+import { AboutSection } from './components/AboutSection';
 import Header from './components/Header';
 import InfoModal from './components/InfoModal';
 
@@ -30,6 +32,18 @@ function App() {
       <InfoModal isOpen={isInfoOpen} setIsOpen={setIsInfoOpen} />
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Header onOpenInfo={() => setIsInfoOpen(true)} />
+
+        {/* Analysis: intro and anchor for nav */}
+        <section id="analysis" className="scroll-mt-8 mb-6">
+          <div className="rounded-2xl border border-emerald-200 bg-white/80 p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold text-emerald-800">Analysis</h2>
+            <p className="text-sm text-emerald-700">
+              View analysis results, summary, and history below. <strong>General Analysis</strong> shows aggregated
+              health for the current session, last 20 minutes, or all captures. <strong>Analysis History</strong> lists
+              every captured image with health score, color breakdown, and recommendations.
+            </p>
+          </div>
+        </section>
 
         <div className="mb-10 grid gap-8 lg:grid-cols-2 items-stretch">
           <section>
@@ -84,6 +98,16 @@ function App() {
               <AnalysisResults key={refreshKey} />
             </div>
           </div>
+        </div>
+
+        {/* Docs: downloadable analysis data */}
+        <div className="mt-8">
+          <DocsSection />
+        </div>
+
+        {/* About: how it works and system summary */}
+        <div className="mt-8">
+          <AboutSection onOpenHowItWorks={() => setIsInfoOpen(true)} />
         </div>
 
         {/* 'Health Status Guide' moved to InfoModal; removed from main screen */}
